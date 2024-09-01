@@ -10,8 +10,8 @@
                             <h5 class="card-title">Iniciar sesión con CIDI</h5>
                             <p class="card-text">Para acceder a la aplicación, debes iniciar sesión utilizando CIDI. Por
                                 favor, haz clic en el enlace a continuación para iniciar el proceso.</p>
-                            <a href="https://cidi.cba.gov.ar/Cuenta/Login?app=614" target="_blank"
-                                class="btn btn-primary">Iniciar sesión con CIDI</a>
+                            <a href="https://cidi.cba.gov.ar/Cuenta/Login?app=614" class="btn btn-primary">Iniciar sesión con
+                                CIDI</a>
                         </div>
                     </div>
                 </div>

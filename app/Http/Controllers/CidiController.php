@@ -114,8 +114,7 @@ class CidiController extends Controller
             }
         }
 
-        // Si no se recibe el valor 'cidi', devolver un error
-        return response()->json(['error' => 'El valor de la query de CIDI es necesario.'], 400);
+        return view('home');
     }
 
     public function index()
