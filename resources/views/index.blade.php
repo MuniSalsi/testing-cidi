@@ -1,15 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Testing CIDI</title>
-    </head>
+@section('contenido')
+    <section>
+        <h1>Bienvenido</h1>
+        <a href="{{ route('logout') }}" class="btn btn-danger">Cerrar Sesion</a>
+    </section>
+@endsection
 
-    <body>
-
-    </body>
-
-</html>
+@push('scripts')
+    <script>
+        // Mostrar SweetAlert basado en la sesión
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success'))
+                Swal.fire({
+                    title: '¡Inicio de sesión exitoso!',
+                    text: '{{ session('success') }}',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                });
+            @endif
+        });
+    </script>
+@endpush

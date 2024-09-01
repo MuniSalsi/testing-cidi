@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Domicilio;
 use App\Models\Persona;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class CidiController extends Controller
 {
@@ -75,7 +78,6 @@ class CidiController extends Controller
 
                 // Obtener los datos de la persona
                 $personaData = [
-                    // 'email' => $responseFormatted['Email'] ?? null,
                     'nombre' => $responseFormatted['Nombre'] ?? null,
                     'apellido' => $responseFormatted['Apellido'] ?? null,
                     'nombre_formateado' => $responseFormatted['NombreFormateado'] ?? null,
@@ -94,9 +96,15 @@ class CidiController extends Controller
                 ];
 
                 // Crear o actualizar el registro de persona
-                Persona::updateOrCreate(['cuil' => $personaData['cuil']], $personaData);
+                $persona = Persona::updateOrCreate(['cuil' => $personaData['cuil']], $personaData);
+                $email = $responseFormatted['Email'] ?? null;
+                $user = User::updateOrCreate(['email' => $email], ['persona_id' => $persona->id]);
 
-                return 'Usuario validado y logueado con éxito.';
+                // Autenticar al usuario
+                Auth::login($user);
+
+                Session::flash('success', 'Has iniciado sesión con éxito usando CIDI.');
+                return redirect()->route('index');
             } else {
                 // Devolver el mensaje de error si el resultado no es 'OK'
                 return response()->json([
@@ -108,6 +116,21 @@ class CidiController extends Controller
 
         // Si no se recibe el valor 'cidi', devolver un error
         return response()->json(['error' => 'El valor de la query de CIDI es necesario.'], 400);
+    }
+
+    public function index()
+    {
+        return view('index');
+    }
+
+    public function logout()
+    {
+        // Cerrar sesión del usuario
+        Auth::logout();
+
+        Session::flash('success', 'Has cerrado sesión exitosamente.');
+        // Redirigir al usuario a la página de inicio de sesión o a otra página
+        return redirect()->route('login');
     }
 }
 
